@@ -1,0 +1,1 @@
+/mnt/mukkuri/RepSeq/RS_Tools/TCRMatch-0.1.1/TCRMatch-0.1.1/tcrmatch -i ../subset_1.txt -t 15 -d ../subset_1.txt -s 0.97 > ../output_TCRMatch.txt

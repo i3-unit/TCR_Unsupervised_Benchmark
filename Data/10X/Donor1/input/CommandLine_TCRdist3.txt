@@ -1,0 +1,2 @@
+#optimisation of the threshold
+python /mnt/mukkuri/RS_Analysis/CHJO/Tools_TCR/TCRdist/tcrdist3-master/tcrdist3-master/run_TCRdist_hclust_opt.py -i ../subset_1.tsv -o ../output_TCRdist3/ -c beta -hclust True

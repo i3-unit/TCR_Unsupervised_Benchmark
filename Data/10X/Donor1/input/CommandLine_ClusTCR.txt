@@ -1,0 +1,5 @@
+From python VM (snake_pop):
+(python /mnt/mukkuri/RS_Analysis/CHJO/Benchmark_tools_TCR/script_python/ClusTCR_script_alpha_beta.py)
+
+#beta data:
+python /mnt/mukkuri/RS_Analysis/CHJO/Tools_TCR/ClusTCR/run_ClusTCR.py -i ../subset_1.tsv -o ../output_ClusTCR -c beta

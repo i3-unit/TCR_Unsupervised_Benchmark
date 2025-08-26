@@ -1,0 +1,2 @@
+from python VM (snake_pop):
+python /mnt/mukkuri/RS_Analysis/CHJO/Tools_TCR/DeepTCR_example/run_DeepTCR.py -itest ../subset_1 -itrain ../TrainData -o ../output_DeepTCR -c TRB

@@ -244,7 +244,7 @@ data_purity <- data.frame(method = c(list_method),
                           purity = c(purity_HD, purity_LD, purity_tcrm, purity_ismart, purity_giana, purity_clustcr, purity_gliph, purity_deeptcr, purity_tcrdist))
 
 
-#retention & purity & consistency
+#retention & purity
 df_metric <- data.frame(methods   = list_method,
                         retention = c(retention_HD, retention_LD, retention_tcrm, retention_ismart, retention_giana,  retention_clustcr,retention_gliph, retention_deeptcr, retention_tcrdist),
                         purity = c(purity_HD, purity_LD, purity_tcrm, purity_ismart, purity_giana, purity_clustcr, purity_gliph, purity_deeptcr, purity_tcrdist))
@@ -266,12 +266,12 @@ df_metric$variable<- factor(df_metric$variable, level = c("retention", "purity")
 #   labs(title = "Retention & Purity")
 
 #bubble plot
-ggplot(df_metric, aes(x=variable, y = methods, color = methods, size = value)) +
-  geom_point(alpha=0.5) +
-  scale_size(range = c(2, 12))+
-  theme_classic() +
-  scale_color_manual(values = color_method)+
-  geom_text(data=df_metric, aes(label=value), size=4, color = "black")
+# ggplot(df_metric, aes(x=variable, y = methods, color = methods, size = value)) +
+#   geom_point(alpha=0.5) +
+#   scale_size(range = c(2, 12))+
+#   theme_classic() +
+#   scale_color_manual(values = color_method)+
+#   geom_text(data=df_metric, aes(label=value), size=4, color = "black")
 ```
 
 # Correlation between purity and retention
@@ -390,16 +390,37 @@ purity_clusters$methods <- factor(purity_clusters$methods, level = list_method)
 purity_clusters$value <- round(purity_clusters$value,2)
 df_all_metric <- rbind(df_metric, purity_clusters)
 
-df_all_metric$methods <- factor(df_all_metric$methods, level = rev(list_method))
+# df_all_metric$methods <- factor(df_all_metric$methods, level = rev(list_method))
 
 #pdf("../Plot/AllMetricsTh_1.pdf", width = 10)
-ggplot(df_all_metric, aes(x=variable, y = methods, color = value, size = value)) +
-  geom_point(alpha=0.7) +
-  scale_size(range = c(2, 12))+
+# ggplot(df_all_metric, aes(x=variable, y = methods, color = value, size = value)) +
+#   geom_point(alpha=0.7) +
+#   scale_size(range = c(2, 12))+
+#   theme_bw() +
+#   scale_color_viridis(discrete = F, direction = -1)+
+#   geom_text(data=df_all_metric, aes(label=value), size=4, color = "black",vjust=-2)+
+#   theme(legend.position ="right",
+#         plot.title = element_text(hjust=0.5),
+#         legend.text=element_text(size=15),
+#         legend.title=element_text(size=15),
+#         text=element_text(size=15),
+#         axis.text=element_text(size=15))+
+#   ylab("")+
+#   xlab("")+
+#   guides(color=guide_legend(), size = guide_legend())+
+#   ggtitle(paste0("cluster_size >", th))
+#dev.off()
+
+df_all_metric$methods <- factor(df_all_metric$methods, level = list_method)
+#barplot
+#pdf("../Plot/AllMetricsTh_1.pdf", width =15, height = 6)
+ggplot(df_all_metric, aes(x=variable, y = value, fill = methods)) +
+  geom_bar(stat = "identity", position = "dodge", color = "white", alpha=0.7) +
   theme_bw() +
-  scale_color_viridis(discrete = F, direction = -1)+
-  geom_text(data=df_all_metric, aes(label=value), size=4, color = "black",vjust=-2)+
-  theme(legend.position ="right",
+  scale_fill_manual(values = c("darkorange", "cyan3", "darkorchid4", "grey", "brown1", "darkgoldenrod1", "pink", "chartreuse3", "black"))+
+  geom_text(aes(label = round(value, 2)), vjust = -0.5,
+             position = position_dodge(0.9)) +
+  theme(legend.position ="bottom",
         plot.title = element_text(hjust=0.5),
         legend.text=element_text(size=15),
         legend.title=element_text(size=15),
@@ -410,7 +431,6 @@ ggplot(df_all_metric, aes(x=variable, y = methods, color = value, size = value))
   guides(color=guide_legend(), size = guide_legend())+
   ggtitle(paste0("cluster_size >", th))
 #dev.off()
-
 ```
 
 # purity in function of the chain type
@@ -428,16 +448,21 @@ df_purity_chain <- data.frame(methods   = c("Hamming_Distance", "Levenshtein_Dis
 df_purity_chain$methods <- factor(df_purity_chain$methods, level = c("Hamming_Distance", "Levenshtein_Distance", "TCRMatch", "iSMART", "GIANA"))
 
 #pdf("../Plot/purityChain.pdf")
-ggplot(df_purity_chain, aes(x=methods, y=purity)) +
-    geom_segment(aes(xend=methods, yend=0)) +
-    geom_point(size=4, color=c("darkorange", "cyan3", "darkorchid4", "grey", "brown1")) +
+ggplot(df_purity_chain, aes(x=methods, y=purity, fill=methods)) +
+    #geom_segment(aes(xend=methods, yend=0)) +
+    #geom_point(size=4, color=c("darkorange", "cyan3", "darkorchid4", "grey", "brown1")) +
+  geom_bar(stat = "identity", position = "dodge", color = "white", alpha=0.7) +
     theme_bw() +
     xlab("")+
+  scale_fill_manual(values = c("darkorange", "cyan3", "darkorchid4", "grey", "brown1"))+
+  geom_text(aes(label = round(purity, 2)), vjust=1.6,
+             position = position_dodge(0.9)) +
   theme(axis.text.x=element_text(angle = 45, hjust = 1),
         legend.text=element_text(size=15),
         legend.title=element_text(size=15),
         text=element_text(size=15),
-        axis.text=element_text(size=15))+
+        axis.text=element_text(size=15), 
+        legend.position="none")+
   ylab("Purity")
 #dev.off()
 ```
@@ -653,7 +678,7 @@ for(method in unique(purity_clusters_chain$method)){
 }
 #pdf("../Plot/AllMetricsTh_1_byChain.pdf")
 grid.arrange(list_plot[["Hamming_Distance"]], list_plot[["Levenshtein_Distance"]], list_plot[["TCRMatch"]], list_plot[["iSMART"]] , list_plot[["GIANA"]],
-             legend, ncol=2)
+             legend, ncol=3)
 #dev.off()
 ```
 
@@ -838,7 +863,7 @@ p <- ggscatter(mds, x = "MDS_1", y = "MDS_2",
 ggpar(p, legend = "None")
 ```
 
-# Jaccard Similarity index between clusters 
+# Jaccard Similarity index between clusters (not in paper)
 
 ```{r complexeHeatmap jaccard index similarity}
 source("../Functions/similarity_functions.R")
@@ -1533,7 +1558,7 @@ for(method in list_method){
   major_times_epi_clusters[[method]] <- epitope_list
 }
 
-#2. calculation of the sensibility
+#2. calculation of the sensitivity
 df_nb_spe <- data.frame(epitope = list_epitope,
                        nb_CDR3 =c(sum(matrix_alpha_beta_final$GILGFVFTL), sum(matrix_alpha_beta_final$NLVPMVATV), sum(matrix_alpha_beta_final$GLCTLVAML), 
                                   sum(matrix_alpha_beta_final$FLCMKALLL), sum(matrix_alpha_beta_final$NYNYLYRLF), sum(matrix_alpha_beta_final$LLFGYPVYV)),
@@ -1572,18 +1597,22 @@ df_sensibility_all_epitope$epitope <- factor(df_sensibility_all_epitope$epitope,
 
 #for GIL epitope only
 #pdf("../Plot/Sensibility_GIL.pdf", height=6, width=7)
-ggplot(df_sensibility_all_epitope[df_sensibility_all_epitope$epitope == "GILGFVFTL",], aes(x=method, y=sensibility, color = method)) +
-  geom_segment(aes(xend=method, yend=0)) +
-  geom_point(size=4) +
+ggplot(df_sensibility_all_epitope[df_sensibility_all_epitope$epitope == "GILGFVFTL",], aes(x=method, y=sensibility,fill = method)) +
+  # geom_segment(aes(xend=method, yend=0)) +
+  # geom_point(size=4) +
+  geom_bar(stat = "identity", position = "dodge", color = "white") +
   scale_color_manual(values = color_method)+
   theme_bw() +
+  scale_fill_manual(values = c("darkorange", "cyan3", "darkorchid4", "grey", "brown1", "darkgoldenrod1", "pink", "chartreuse3", "black"))+
+  geom_text(aes(label = round(sensibility, 2)), vjust = -0.5,
+             position = position_dodge(0.9)) +
   xlab("")+
   theme(axis.text.x =  element_text(angle =45, hjust = 1),
         legend.position="none",
         plot.title = element_text(hjust = 0.5, face = "bold", size = 20),
         text=element_text(size=15),
         axis.text=element_text(size=15))+
-  ggtitle("GILGFVFTL")
+  ggtitle("GILGFVFTL")+ylim(0,1)+ylab("sensitivity")
 #dev.off()
 
 #boxplot
@@ -1601,7 +1630,7 @@ boxplot <- ggplot(data= df_sensibility_all_epitope, aes(x=method, y=sensibility)
           legend.title=element_text(size=15),
           text=element_text(size=15),
           axis.text=element_text(size=15))+
-    scale_fill_manual(values= list_color_epitope)+xlab("")#5x5
+    scale_fill_manual(values= list_color_epitope)+xlab("")+ylab("sensitivity")#5x5
 
 stat.test <- stat.test %>% add_xy_position(x = "method")
 stat.test$custom.label <- ifelse(stat.test$p.adj <= 0.05, stat.test$p.adj, "ns")

@@ -1,0 +1,5 @@
+From python VM (snake_pop):
+python /mnt/mukkuri/RS_Analysis/CHJO/Tools_TCR/GIANA/GIANA4.1.py -f ../subset_1.txt -v
+
+From python VM (snake_pop):
+python /mnt/mukkuri/RS_Analysis/CHJO/Tools_TCR/iSMART/iSMART-master/iSMARTm.py -f ../subset_1.txt -v ## Single file without variable gene

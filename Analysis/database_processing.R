@@ -15,7 +15,7 @@ data_human <- all_database_human %>%
   filter(Cell_subset == "CD8") %>% 
   drop_na(V_alpha) %>% drop_na(J_alpha) %>% drop_na(V_beta) %>% drop_na(J_beta)
 
-data_human <- subset(data_human, nchar(as.character(data_human$CDR3_alpha))<=23 & nchar(as.character(data_human$CDR3_alpha))>=6 && nchar(as.character(data_human$CDR3_beta))<=23 & nchar(as.character(data_human$CDR3_beta))>=6)
+data_human <- subset(data_human, nchar(as.character(data_human$CDR3_alpha))<=23 & nchar(as.character(data_human$CDR3_alpha))>=6 & nchar(as.character(data_human$CDR3_beta))<=23 & nchar(as.character(data_human$CDR3_beta))>=6)
 
 #check if at least 2 TCR bind each epitope
 data_human <- data_human %>%

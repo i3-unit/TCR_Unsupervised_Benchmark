@@ -1,15 +1,5 @@
 #Description of human/mouse pooled databases
 
-#Figure 1 of paper
-#B: venn_diagram
-#C: pieChart_db_human + barplot_database_human 
-#D: piechart_cellsubset_human + barplot_cellsubset_human
-#E: barplot_verifiedscore_all_human + barplot_verifiedscore_split_human
-#F: barplot_agscore_all_human + barplot_agscore_split_human 
-#G: count_organism_human
-#H: nb_epitope_TCR_human
-#I: count_epitope_human
-
 library(ggplot2)
 library(dplyr)
 library(gridExtra)
@@ -23,7 +13,7 @@ directory <- "../Data"
 all_database_human <- read_delim(paste0(directory, "/Database/database_pooled_human_2023_03_15.txt"), delim = "\t")
 all_database_human$Cell_subset[all_database_human$Cell_subset=="CD4,CD8"] <- "CD4, CD8"
 
-texte_size <- 15
+texte_size <- 18
 
 #Figure 1B: VennDiagram of overlap of studies between the three public databases
 db_iedb <- all_database_human %>% filter(Database == "IEDB") %>% drop_na(PubMed_ID)
@@ -58,7 +48,7 @@ mycols <- c("#0073C2FF", "#EFC000FF", "#868686FF")
 pieChart_db_human <- ggplot(database_perc_human, aes(x = "", y = perc_db, fill = Database)) +
   geom_bar(width = 1, stat = "identity", color = "white") +
   coord_polar("y", start = 0)+
-  geom_text(aes(y = db_ypos, label = paste0(round(perc_db, 0), "%")), color = "black", size = 6)+
+  geom_text(aes(y = db_ypos, label = paste0(round(perc_db, 0), "%")), color = "black", size = 8)+
   scale_fill_manual(values = mycols) +
   theme_void()+
   ggtitle("C")+
@@ -91,7 +81,8 @@ barplot_database_human <- ggplot(data=typechain_perc_human, aes(x=chain_type, y=
         legend.text=element_text(size=texte_size),
         legend.title=element_text(size=texte_size),
         text=element_text(size=texte_size),
-        axis.text=element_text(size=texte_size))
+        axis.text=element_text(size=texte_size),
+        axis.text.x = element_text(angle = 45, hjust = 1))
 
 
 #Figure 1D: cell type
@@ -106,7 +97,7 @@ typecell_perc_human <- all_database_human %>%
 piechart_cellsubset_human <- ggplot(typecell_perc_human, aes(x = "", y = perc, fill = Cell_subset)) +
   geom_bar(width = 1, stat = "identity", color = "white") +
   coord_polar("y", start = 0)+
-  geom_text(aes(y = ypos, label = ifelse(perc > 1, paste0(round(perc, 0), "%"), NA)), color = "black", size = 6)+
+  geom_text(aes(y = ypos, label = ifelse(perc > 1, paste0(round(perc, 0), "%"), NA)), color = "black", size = 8)+
   scale_fill_brewer(palette="Dark2", na.value="grey")+
   theme_void()+
   ggtitle("D")+
@@ -132,9 +123,10 @@ barplot_cellsubset_human <- ggplot(data=typecellchain_perc_human, aes(x=chain_ty
         legend.text=element_text(size=texte_size),
         legend.title=element_text(size=texte_size),
         text=element_text(size=texte_size),
-        axis.text=element_text(size=texte_size))
+        axis.text=element_text(size=texte_size),
+        axis.text.x = element_text(angle = 45, hjust = 1))
 
-#Figure 1E: Verified score
+#Figure 1H: Verified score
 # count_verified_score_h <- all_database_human %>% 
 #   group_by(Verified_score) %>% 
 #   summarise(count = n(), .groups = 'drop') %>% 
@@ -166,7 +158,7 @@ verifiedscore_perc_human$Verified_score <- as.character(verifiedscore_perc_human
 piechart_verifiedscore_all_human <- ggplot(data=verifiedscore_perc_human, aes(x = "", y = perc, fill = Verified_score)) +
   geom_bar(width = 1, stat = "identity", color = "white") +
   coord_polar("y", start = 0)+
-  geom_text(aes(y = ypos, label = ifelse(perc > 1, paste0(round(perc, 0), "%"), NA)), color = "black", size = 6)+
+  geom_text(aes(y = ypos, label = ifelse(perc > 1, paste0(round(perc, 0), "%"), NA)), color = "black", size = 8)+
   scale_fill_brewer(palette="Pastel2", na.value="grey")+
   theme_void()+
   ggtitle("E")+
@@ -195,10 +187,11 @@ barplot_verifiedscore_split_human <- ggplot(data=verified_score_perc_human, aes(
         legend.text=element_text(size=texte_size),
         legend.title=element_text(size=texte_size),
         text=element_text(size=texte_size),
-        axis.text=element_text(size=texte_size))
+        axis.text=element_text(size=texte_size),
+        axis.text.x = element_text(angle = 45, hjust = 1))
 
 
-#Figure 1F: Ag identification score
+#Figure 1I: Ag identification score
 all_database_human <- all_database_human %>% mutate(interval_score = ifelse(Identification_score ==3.1 | Identification_score ==4.1, "3.1,4.1",
                                                                             ifelse(Identification_score ==3.2 | Identification_score ==4.2, "3.2,4.2",
                                                                                    ifelse(Identification_score ==3.3 | Identification_score ==4.3, "3.3,4.3",
@@ -235,10 +228,10 @@ agscore_perc_human <- all_database_human %>%
 
 
 piechart_agscore_all_human <- ggplot(data=agscore_perc_human, aes(x = "", y = perc, fill = interval_score)) +
-  geom_bar(width = 1, stat = "identity", color = "white", alpha =0.5) +
+  geom_bar(width = 1, stat = "identity", color = "white", alpha =1) +
   coord_polar("y", start = 0)+
-  geom_text(aes(y = ypos, label = ifelse(perc > 2, paste0(round(perc,0), "%"), NA)), color = "black", size = 6)+
-  scale_fill_brewer(palette = "BrBG")+
+  geom_text(aes(y = ypos, label = ifelse(perc > 2, paste0(round(perc,0), "%"), NA)), color = "black", size =8)+
+  scale_fill_brewer(palette = "Paired")+
   theme_void()+
   ggtitle("F")+
   theme(legend.position = "none",
@@ -254,8 +247,8 @@ count_ag_score_h <- all_database_human %>%
 count_ag_score_h$interval_score <- as.character(count_ag_score_h$interval_score)
 
 barplot_agscore_split_human <- ggplot(data=count_ag_score_h, aes(x=chain_type, y=perc, fill=interval_score)) +
-  geom_bar(stat="identity", color="white", alpha = 0.5)+
-  scale_fill_brewer(palette="BrBG", na.value="grey")+
+  geom_bar(stat="identity", color="white", alpha = 1)+
+  scale_fill_brewer(palette="Paired", na.value="grey")+
   theme_bw()+
   theme(plot.title = element_text(hjust= 0.5, size = 16))+
   ggtitle(" ")+
@@ -266,10 +259,11 @@ barplot_agscore_split_human <- ggplot(data=count_ag_score_h, aes(x=chain_type, y
         legend.text=element_text(size=texte_size),
         legend.title=element_text(size=texte_size),
         text=element_text(size=texte_size),
-        axis.text=element_text(size=texte_size))#
+        axis.text=element_text(size=texte_size),
+        axis.text.x = element_text(angle = 45, hjust = 1))
 
 
-#Fgure 1G: antigen organism
+#Fgure 1E: antigen organism
 count_organism_h <- all_database_human %>% 
   group_by(Antigen_organism) %>% 
   summarise(count = n(), .groups = 'drop') %>% 
@@ -293,7 +287,7 @@ list_organism_color <- list("SARS-CoV2"="#FFFF99",
 
 count_organism_human <- ggplot(data=count_organism_h_biggest, aes(x= reorder(Antigen_organism, perc), y=perc, fill = Antigen_organism)) +
   geom_bar(stat="identity", alpha = 1)+
-  geom_text(aes(label=round(perc,1)), hjust=-0.1, size=3.5)+
+  geom_text(aes(label=round(perc,1)), hjust=-0.1, size=4)+
   theme_classic()+
   scale_fill_manual(values = list_organism_color)+
   theme(plot.title = element_text(hjust= 0.001, size = 25, face = "bold"),
@@ -307,7 +301,7 @@ count_organism_human <- ggplot(data=count_organism_h_biggest, aes(x= reorder(Ant
   coord_flip()
 
 
-#Figure 1H: antigen epitope
+#Figure 1F: antigen epitope
 count_epitope_h <- all_database_human %>% 
   group_by(Epitope, Antigen_organism) %>% 
   summarise(count = n(), .groups = 'drop') %>% 
@@ -319,7 +313,7 @@ count_epitope_h_biggest <- count_epitope_h %>% filter(perc >=1) %>% filter(!is.n
 
 count_epitope_human <- ggplot(data=count_epitope_h_biggest, aes(x= reorder(Epitope, perc), y=perc, fill = Antigen_organism)) +
   geom_bar(stat="identity", alpha = 1)+
-  geom_text(aes(label=round(perc,1)), hjust=-0.1, size=3.5)+
+  geom_text(aes(label=round(perc,1)), hjust=-0.1, size=4)+
   theme_classic()+
   scale_fill_brewer(palette="Accent", na.value="grey")+
   theme(plot.title = element_text(hjust= 0.001, size = 25, face = "bold"),
@@ -337,7 +331,7 @@ legend <- get_legend(count_epitope_human)
 count_epitope_human <- count_epitope_human + theme(legend.position="none")
 
 
-#Figure 1I: Number of TCRs (alpha/beta) which recognise one Ag
+#Figure 1G: Number of TCRs (alpha/beta) which recognise one Ag
 count_TCRAg_human <- all_database_human %>% 
   mutate(pair = paste0(CDR3_alpha, '_',CDR3_beta)) %>% 
   group_by(Epitope) %>% 
@@ -353,7 +347,7 @@ nb_epitope_TCR_human <-ggplot(count_TCRAg_human, aes(x= nb_tcr, y = TCR_nb_pc))+
   xlim(0,11)+
   theme_light()+
   labs(y= "Percentage of Epitope (%)", x = "Number of TCRs") +
-  ggtitle("I")+
+  ggtitle("G")+
   theme(plot.title = element_text(hjust = 0.00001, size = 25, face = "bold"), 
         plot.margin=unit(c(0.5,0.5,0.5,0.5),"cm"),
         axis.text=element_text(size=texte_size),
@@ -362,14 +356,19 @@ nb_epitope_TCR_human <-ggplot(count_TCRAg_human, aes(x= nb_tcr, y = TCR_nb_pc))+
 
 ###############################################################################$######
 #Figure 1 C-F
-# grid.arrange(pieChart_db_human, barplot_database_human, piechart_cellsubset_human, barplot_cellsubset_human, 
-#              piechart_verifiedscore_all_human, barplot_verifiedscore_split_human, piechart_agscore_all_human, barplot_agscore_split_human,
-#              widths = c(1, 1, 1,1),heights=c(1,1),
-#              layout_matrix = rbind(c(1, 2, 3, 4),
-#                                    c(5, 6, 7, 8)))
+grid.arrange(pieChart_db_human, barplot_database_human, piechart_cellsubset_human, barplot_cellsubset_human,
+             piechart_verifiedscore_all_human, barplot_verifiedscore_split_human, piechart_agscore_all_human, barplot_agscore_split_human,
+             widths = c(1, 1, 1,1),heights=c(1,1),
+             layout_matrix = rbind(c(1, 2, 3, 4),
+                                   c(5, 6, 7, 8)))
 
 #Figure 1 G-I
-# grid.arrange(count_organism_human, count_epitope_human, nb_epitope_TCR_human, legend,
-#              widths = c(1,1,1),heights=c(1, 0.1),
-#              layout_matrix = rbind(c(1, 2, 3),
-#                                    c(4,4, NA)))
+grid.arrange(count_organism_human, count_epitope_human, nb_epitope_TCR_human, legend,
+             widths = c(1,1,1),heights=c(1, 0.1),
+             layout_matrix = rbind(c(1, 2, 3),
+                                   c(4,4, NA)))
+
+grid.arrange(count_organism_human, count_epitope_human, legend,
+             widths = c(1,1),heights=c(1, 0.1),
+             layout_matrix = rbind(c(1, 2),
+                                   c(4,4)))
