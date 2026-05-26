@@ -5,7 +5,7 @@ This repository contains scripts and data to accompagny the study "Benchmarking 
 Identifying T cell receptor (TCR) specificity is crucial for advancing the understanding of adaptive immunity. Despite the development of computational methods to infer TCR specificity, their clustering behavior has not been thoroughly compared. We addressed this by curating a unified database of 190,670 human TCRs with known specificities for 2,313 epitopes across 121 organisms, combining data IEDB ([iedb](https://www.iedb.org/)), McPAS-TCR ([McPAS](https://friedmanlab.weizmann.ac.il/McPAS-TCR/)), and VDJdb ([VDJdb](https://vdjdb.cdr3.net/)). We asked whether widely used TCR clustering methods produce comparable results on the same high-confidence dataset. We hypothesized that shared assumptions about conserved CDR3 motifs would yield similar patterns, with differences reflecting algorithmic design. Nine methods for clustering TCRs based on similarity were benchmarked against this dataset. DeepTCR demonstrated the best retention, while ClusTCR, TCRMatch, and GLIPH2 excelled in cluster purity but had lower retention. GLIPH2, Levenshtein distance, Hamming distance and clusTCR generated large clusters in contrast to TCRMatch and DeepTCR. Smaller, antigen-specific clusters were produced by GIANA, and iSMART. DeepTCR was the most sensitive in capturing antigen-specific TCRs. We confirmed these observations using a larger dataset from 10XGenomics containing antigen-specific labelled TCRs as well non-labelled cells. This study offers a unified TCR database and a benchmark of specificity inference methods, guiding researchers in selecting appropriate tools.
 
 
-## Worflow
+## Workflow
 ![](Graphical_abstract.jpeg)
 
 
