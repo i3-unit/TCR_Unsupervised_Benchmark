@@ -13,4 +13,4 @@ This folder contains the October 2023 update of the curated human TCR-epitope po
 
 ## File hosted on Zenodo (not in this repository)
 
-- `IEDB_tcell_assay_table_MHCI.csv` (195 MB, October 2023) exceeds GitHub's file size limit and is therefore not included here. It is archived as a supplementary file on Zenodo with this release: https://doi.org/10.5281/zenodo.20402420
+- `IEDB_tcell_assay_table_MHCI.csv` (195 MB, October 2023) exceeds GitHub's file size limit and is therefore not included here. It is archived as a supplementary file on Zenodo with this release, at the root of the deposit (filename: `Database_2023_10__IEDB_tcell_assay_table_MHCI.csv`). Available at: https://doi.org/10.5281/zenodo.20402420  → section "Files"
